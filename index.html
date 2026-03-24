@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Vagabond</title>
+
   <meta name="description" content="Every creation begins as an idea. But ideas are everywhere — expression is rare.">
 
   <link rel="stylesheet" href="/assets/css/style.css">
@@ -17,6 +18,7 @@
 
 <body>
 
+  <!-- HEADER -->
   <header>
     <div class="container">
       <div class="header-inner">
@@ -32,7 +34,10 @@
     </div>
   </header>
 
+  <!-- MAIN -->
   <main>
+
+    <!-- HERO -->
     <section class="hero">
       <div class="container">
         <p class="hero-text">
@@ -43,16 +48,20 @@
       </div>
     </section>
 
+    <!-- POSTS -->
     <section class="posts-section">
       <div class="container">
         <p class="section-label">Latest</p>
+
         <div class="post-grid" id="latest-posts">
           <p class="loading">Loading…</p>
         </div>
       </div>
     </section>
+
   </main>
 
+  <!-- FOOTER -->
   <footer>
     <div class="container">
       <div class="footer-inner">
@@ -62,9 +71,11 @@
     </div>
   </footer>
 
-  <!-- ✅ Identity redirect script (CORRECT PLACE) -->
+  <!-- ✅ NETLIFY IDENTITY FIX (CRITICAL) -->
   <script>
     if (window.netlifyIdentity) {
+
+      // Redirect after login
       window.netlifyIdentity.on("init", user => {
         if (!user) {
           window.netlifyIdentity.on("login", () => {
@@ -72,10 +83,21 @@
           });
         }
       });
+
+      // ✅ Handle email confirmation + invite links
+      window.netlifyIdentity.on("init", () => {
+        if (
+          window.location.hash.includes("confirmation_token") ||
+          window.location.hash.includes("invite_token")
+        ) {
+          window.netlifyIdentity.open();
+        }
+      });
+
     }
   </script>
 
-  <!-- Your scripts -->
+  <!-- SITE SCRIPTS -->
   <script src="/assets/js/config.js"></script>
   <script src="/assets/js/main.js"></script>
 
