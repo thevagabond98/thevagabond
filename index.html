@@ -5,9 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Vagabond</title>
   <meta name="description" content="Every creation begins as an idea. But ideas are everywhere — expression is rare.">
+
   <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Theme -->
   <script src="/assets/js/theme.js"></script>
+
+  <!-- Netlify Identity -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
+
 <body>
 
   <header>
@@ -29,10 +36,10 @@
     <section class="hero">
       <div class="container">
         <p class="hero-text">
-  Navigating the noise;<br><br>
-  politics, stories, poetry & ideas<br><br>
-  for people who still believe words matter.<span class="compass">🧭</span>
-</p>
+          Navigating the noise;<br><br>
+          politics, stories, poetry & ideas<br><br>
+          for people who still believe words matter.<span class="compass">🧭</span>
+        </p>
       </div>
     </section>
 
@@ -55,7 +62,22 @@
     </div>
   </footer>
 
+  <!-- ✅ Identity redirect script (CORRECT PLACE) -->
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  </script>
+
+  <!-- Your scripts -->
   <script src="/assets/js/config.js"></script>
   <script src="/assets/js/main.js"></script>
+
 </body>
 </html>
