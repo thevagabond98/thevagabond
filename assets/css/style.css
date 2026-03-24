@@ -1,0 +1,278 @@
+/* ─── VARIABLES ─────────────────────────────────────────── */
+:root {
+  --bg:        #0e0e0e;
+  --bg2:       #141414;
+  --bg3:       #1a1a1a;
+  --border:    #2a2a2a;
+  --text:      #e8e4dc;
+  --muted:     #7a7570;
+  --accent:    #c9a96e;
+  --accent2:   #e8c98a;
+  --white:     #f5f2ec;
+  --font-head: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Raleway', sans-serif;
+}
+
+/* ─── RESET ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* ─── HEADER ─────────────────────────────────────────────── */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.6rem 4rem;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: rgba(14,14,14,0.92);
+  backdrop-filter: blur(12px);
+  z-index: 100;
+}
+.logo {
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: var(--white);
+}
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.nav-links a:hover { color: var(--accent); transition: color 0.2s; }
+
+/* ─── HERO ───────────────────────────────────────────────── */
+.hero {
+  padding: 7rem 4rem 5rem;
+  max-width: 700px;
+}
+.hero-tagline {
+  font-family: var(--font-head);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--white);
+  opacity: 0;
+  animation: fadeUp 1s ease forwards 0.2s;
+}
+
+/* ─── SECTION LABELS ─────────────────────────────────────── */
+.section-label {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 2.5rem;
+}
+
+/* ─── POSTS SECTION ──────────────────────────────────────── */
+.posts-section {
+  padding: 3rem 4rem 5rem;
+  border-top: 1px solid var(--border);
+}
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 0;
+}
+.post-card {
+  padding: 2.2rem 2rem 2.2rem 0;
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards;
+  transition: background 0.2s;
+}
+.post-card:hover { background: var(--bg2); padding-left: 1rem; transition: all 0.3s ease; }
+.post-meta {
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+.post-title {
+  font-family: var(--font-head);
+  font-size: 1.35rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--white);
+  margin-bottom: 0.8rem;
+}
+.post-excerpt {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.7;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.post-card a:hover .post-title { color: var(--accent); transition: color 0.2s; }
+
+/* ─── CATEGORIES ─────────────────────────────────────────── */
+.categories-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--border);
+}
+.category-card {
+  padding: 4rem 3rem;
+  border-right: 1px solid var(--border);
+  background: var(--bg2);
+}
+.category-card:last-child { border-right: none; }
+.category-card h3 {
+  font-family: var(--font-head);
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+.category-card p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 1.8rem;
+}
+.cat-link {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.cat-link:hover { color: var(--accent2); border-color: var(--accent2); }
+
+/* ─── SINGLE POST PAGE ───────────────────────────────────── */
+.post-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 5rem 2rem 8rem;
+}
+.post-page-meta {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+.post-page-title {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--white);
+  margin-bottom: 3rem;
+}
+.post-page-body {
+  font-size: 1.05rem;
+  line-height: 1.95;
+  color: #c8c4bc;
+}
+.post-page-body p { margin-bottom: 1.6rem; }
+.post-page-body h2 {
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--white);
+  margin: 2.5rem 0 1rem;
+}
+.post-page-body blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  font-style: italic;
+  color: var(--muted);
+  font-family: var(--font-head);
+  font-size: 1.2rem;
+}
+
+/* ─── CATEGORY INDEX PAGE ────────────────────────────────── */
+.cat-page-header {
+  padding: 5rem 4rem 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.cat-page-header h1 {
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 300;
+  color: var(--white);
+}
+.cat-page-header p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 0.8rem;
+}
+.cat-posts-list {
+  padding: 3rem 4rem;
+}
+
+/* ─── ABOUT PAGE ─────────────────────────────────────────── */
+.about-page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 6rem 2rem;
+}
+.about-page h1 {
+  font-family: var(--font-head);
+  font-size: 3rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--white);
+  margin-bottom: 2.5rem;
+}
+.about-page p {
+  font-size: 1rem;
+  color: #c0bbb4;
+  line-height: 1.95;
+  margin-bottom: 1.4rem;
+}
+
+/* ─── FOOTER ─────────────────────────────────────────────── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 4rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+/* ─── ANIMATIONS ─────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .site-header { padding: 1.2rem 1.5rem; }
+  .nav-links { gap: 1.5rem; }
+  .hero { padding: 4rem 1.5rem 3rem; }
+  .posts-section { padding: 2rem 1.5rem 3rem; }
+  .posts-grid { grid-template-columns: 1fr; }
+  .categories-section { grid-template-columns: 1fr; }
+  .category-card { border-right: none; border-bottom: 1px solid var(--border); }
+  .cat-page-header, .cat-posts-list { padding: 3rem 1.5rem; }
+  .site-footer { padding: 2rem 1.5rem; }
+}
