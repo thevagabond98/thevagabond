@@ -1,6 +1,6 @@
 ---
 title: The Ramras
-date: 2026-02-18T13:01:17.399Z
+date: 2026-02-18T13:02:06.197Z
 description: A quiet story about craft, care, and the invisible human touch that
   machines can’t replace.
 ---
