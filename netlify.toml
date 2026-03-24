@@ -1,0 +1,29 @@
+# Netlify configuration for The Vagabond
+
+[build]
+  publish = "."
+  command = "node generate-index.js"
+
+# Clean URLs
+[[redirects]]
+  from = "/stories"
+  to   = "/stories/"
+  status = 301
+
+[[redirects]]
+  from = "/poems"
+  to   = "/poems/"
+  status = 301
+
+[[redirects]]
+  from = "/ideas"
+  to   = "/ideas/"
+  status = 301
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

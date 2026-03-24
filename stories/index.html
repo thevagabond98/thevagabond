@@ -1,39 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stories — The Vagabond</title>
-  <link rel="stylesheet" href="../assets/css/style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/theme.js"></script>
 </head>
 <body data-category="stories">
 
-  <header class="site-header">
-    <a href="../index.html" class="logo">The Vagabond</a>
-    <nav class="nav-links">
-      <a href="../stories/index.html" style="color:var(--accent)">Stories</a>
-      <a href="../poems/index.html">Poems</a>
-      <a href="../ideas/index.html">Ideas</a>
-      <a href="../about.html">About</a>
-    </nav>
+  <header>
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="site-title">The Vagabond</a>
+        <nav>
+          <a href="/stories/">Stories</a>
+          <a href="/poems/">Poems</a>
+          <a href="/ideas/">Ideas</a>
+          <a href="/about.html">About</a>
+          <button class="theme-toggle" aria-label="Toggle theme">☀</button>
+        </nav>
+      </div>
+    </div>
   </header>
 
-  <div class="cat-page-header">
-    <h1>Stories</h1>
-    <p>Narratives that linger, stitched with truth, memory, and quiet wonder.</p>
-  </div>
+  <main>
+    <div class="page-header">
+      <div class="container">
+        <h1 class="page-title">Stories</h1>
+        <p class="page-subtitle">Narratives that linger, stitched with truth, memory, and quiet wonder.</p>
+      </div>
+    </div>
 
-  <div class="cat-posts-list">
-    <h2 class="section-label">All Stories</h2>
-    <div class="posts-grid" id="cat-posts-grid"></div>
-  </div>
+    <div class="post-list">
+      <div class="container">
+        <div id="category-posts">
+          <p class="loading">Loading…</p>
+        </div>
+      </div>
+    </div>
+  </main>
 
-  <footer class="site-footer">
-    <p>© 2026 The Vagabond · All words belong to their wanderer.</p>
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">The Vagabond</span>
+        <div class="social-links"></div>
+      </div>
+    </div>
   </footer>
 
-  <script src="../assets/js/posts.js"></script>
-  <script src="../assets/js/main.js"></script>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>

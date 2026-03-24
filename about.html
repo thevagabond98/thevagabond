@@ -1,43 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About — The Vagabond</title>
-  <link rel="stylesheet" href="assets/css/style.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/theme.js"></script>
 </head>
 <body>
 
-  <header class="site-header">
-    <a href="index.html" class="logo">The Vagabond</a>
-    <nav class="nav-links">
-      <a href="stories/index.html">Stories</a>
-      <a href="poems/index.html">Poems</a>
-      <a href="ideas/index.html">Ideas</a>
-      <a href="about.html" style="color:var(--accent)">About</a>
-    </nav>
+  <header>
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="site-title">The Vagabond</a>
+        <nav>
+          <a href="/stories/">Stories</a>
+          <a href="/poems/">Poems</a>
+          <a href="/ideas/">Ideas</a>
+          <a href="/about.html">About</a>
+          <button class="theme-toggle" aria-label="Toggle theme">☀</button>
+        </nav>
+      </div>
+    </div>
   </header>
 
-  <div class="about-page">
-    <h1>About The Vagabond</h1>
-    <p>
-      Every creation begins as an idea. But ideas are everywhere — expression is rare.
-      Stories give form to what floats unnamed inside us. Poems catch what prose cannot hold.
-      Ideas are the restless questions that refuse to stay quiet.
-    </p>
-    <p>
-      The Vagabond is a space for all of it. A wandering mind putting words to the world —
-      one article, one story, one poem at a time.
-    </p>
-    <p>
-      No algorithm. No agenda. Just honest writing from wherever the road leads.
-    </p>
-  </div>
+  <main>
+    <div class="about-section">
+      <div class="container">
+        <div class="about-content">
+          <h1>About</h1>
+          <p>
+            The Vagabond is a space for stories, poems, and ideas — written slowly,
+            with care, and without compromise.
+          </p>
+          <p>
+            Every creation begins as an idea. But ideas are everywhere.
+            Expression is rare.
+          </p>
+          <p>
+            This is an attempt at expression.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
 
-  <footer class="site-footer">
-    <p>© 2026 The Vagabond · All words belong to their wanderer.</p>
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span class="footer-copy">The Vagabond</span>
+        <div class="social-links"></div>
+      </div>
+    </div>
   </footer>
 
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>

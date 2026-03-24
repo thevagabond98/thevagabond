@@ -1,63 +1,133 @@
 # The Vagabond — Setup Guide
 
-## 📁 Folder Structure
+A minimal CMS-powered writing platform. Static HTML/CSS/JS frontend,
+Netlify CMS backend, Git-based content storage.
+
+---
+
+## Folder Structure
+
 ```
-thevagabond/
-├── index.html          ← Homepage
-├── about.html          ← About page
-├── stories/
-│   ├── index.html      ← Stories list page
-│   └── *.html          ← Individual story files
-├── poems/
-│   ├── index.html      ← Poems list page
-│   └── *.html          ← Individual poem files
-├── ideas/
-│   ├── index.html      ← Ideas list page
-│   └── *.html          ← Individual idea files
+/
+├── index.html                  ← Homepage
+├── about.html                  ← About page
+├── post.html                   ← Dynamic post page (?category=&slug=)
+├── netlify.toml                ← Netlify config + build command
+├── generate-index.js           ← Rebuilds content/*/index.json
+│
+├── stories/index.html          ← Stories category page
+├── poems/index.html            ← Poems category page
+├── ideas/index.html            ← Ideas category page
+│
+├── content/
+│   ├── stories/
+│   │   ├── index.json          ← Auto-generated slug list
+│   │   └── *.md                ← Story posts
+│   ├── poems/
+│   │   ├── index.json
+│   │   └── *.md
+│   └── ideas/
+│       ├── index.json
+│       └── *.md
+│
+├── admin/
+│   ├── index.html              ← Netlify CMS loader
+│   └── config.yml              ← CMS collections config
+│
 └── assets/
-    ├── css/style.css   ← All styles
+    ├── css/style.css           ← All styles (dark + light mode)
     └── js/
-        ├── posts.js    ← POST DATA (edit this to add posts!)
-        └── main.js     ← Renders posts on pages
+        ├── config.js           ← Social links, site settings
+        ├── theme.js            ← Dark/light toggle
+        └── main.js             ← Fetches + renders all posts
 ```
 
 ---
 
-## ✍️ How to Add a New Post
+## Deploying to Netlify
 
-### Step 1 — Create the HTML file
-Copy `stories/the-ramras.html` as a template.
-Save your new file in the right folder (stories / poems / ideas).
+### 1. Push to GitHub
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/YOUR_USER/vagabond.git
+git push -u origin main
+```
 
-### Step 2 — Register it in posts.js
-Open `assets/js/posts.js` and add your post to the array:
+### 2. Connect to Netlify
+1. Go to [netlify.com](https://netlify.com) → **Add new site** → **Import from Git**
+2. Choose your repository
+3. Build settings are already in `netlify.toml` — no changes needed
+4. Click **Deploy**
 
+### 3. Enable Identity + Git Gateway
+1. In Netlify dashboard → **Site settings → Identity** → **Enable Identity**
+2. Under **Registration** → set to **Invite only**
+3. Scroll to **Services → Git Gateway** → **Enable Git Gateway**
+4. Go to **Identity** tab → **Invite users** → invite yourself
+
+### 4. Connect your custom domain
+1. Netlify dashboard → **Domain settings** → **Add custom domain**
+2. Add `thevagabond.blog`
+3. Update your DNS to point to Netlify (they'll guide you)
+4. SSL is provisioned automatically — fixes the certificate issue
+
+---
+
+## Writing New Posts
+
+### Via CMS (recommended)
+1. Go to `https://yoursite.netlify.app/admin`
+2. Log in with your Netlify Identity account
+3. Click a collection (Stories / Poems / Ideas)
+4. Click **New** — write, save, publish
+5. Netlify rebuilds automatically; `generate-index.js` updates the manifest
+
+### Manually
+1. Create a `.md` file in `content/{category}/`
+2. Use this frontmatter:
+   ```markdown
+   ---
+   title: "Your Title"
+   date: "2026-03-24"
+   description: "One line summary."
+   ---
+
+   Your content here...
+   ```
+3. Run `node generate-index.js` to update `index.json`
+4. Commit and push
+
+---
+
+## Customising
+
+### Social links
+Edit `assets/js/config.js`:
 ```js
-{
-  id: "your-post-slug",
-  title: "Your Post Title",
-  excerpt: "A short preview of your post (2-3 sentences).",
-  category: "stories",        // stories | poems | ideas
-  date: "March 2026",
-  file: "../stories/your-post-slug.html"
-}
+social: [
+  { label: 'Instagram', url: 'https://instagram.com/yourhandle' },
+  { label: 'Twitter',   url: 'https://twitter.com/yourhandle' },
+],
 ```
 
-### Step 3 — Push to GitHub → Netlify auto-deploys → Done! ✅
+### Homepage post count
+Also in `config.js`:
+```js
+homepagePostCount: 8,
+```
+
+### Colours / typography
+All in `assets/css/style.css` under `:root` (dark) and `[data-theme="light"]`.
 
 ---
 
-## 🚀 Deploy to Netlify
+## How Posts Are Loaded
 
-1. Push this folder to your GitHub repo (`thevagabond`)
-2. Go to [netlify.com](https://netlify.com) → New site from Git
-3. Connect your GitHub repo
-4. Build settings: leave blank (static site)
-5. Click Deploy
-6. Go to Domain Settings → add your custom domain
+1. `main.js` reads `content/{category}/index.json` → list of slugs
+2. Fetches each `content/{category}/{slug}.md`
+3. Parses YAML frontmatter + Markdown body
+4. Renders into the DOM
 
----
-
-## 🌐 Custom Domain
-In Netlify: Site Settings → Domain Management → Add custom domain
-Then update your domain's DNS to point to Netlify (they'll guide you).
+No build step, no bundler, no framework.
