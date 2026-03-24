@@ -150,9 +150,9 @@ nav a:hover { color: var(--text); }
   font-style: italic;
   font-size: clamp(1.9rem, 4vw, 3.2rem);
   font-weight: 400;
-  line-height: 0.5;
+  line-height: 1.0;
   color: var(--text);
-  max-width: 800px;
+  max-width: 900px;
   opacity: 0;
   animation: fadeUp 0.9s ease forwards 0.1s;
 }
