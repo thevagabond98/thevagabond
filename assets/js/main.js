@@ -35,9 +35,10 @@ function markdownToHtml(md) {
     .replace(/_(.+?)_/g,       '<em>$1</em>')
     // Inline code
     .replace(/`(.+?)`/g, '<code>$1</code>')
-    // Links
-    .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
-    // Horizontal rule
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">')
+// Links
+.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
+// Horizontal rule
     .replace(/^---$/gm, '<hr>')
     // Line breaks → paragraphs
     .split(/\n{2,}/)
