@@ -185,19 +185,17 @@ nav a:hover { color: var(--text); }
 .post-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 0;
+  gap: 2rem;
   border-top: 1px solid var(--border);
 }
 
 .post-card {
-  padding: 2rem 2rem 2rem 0;
-  border-right: 1px solid var(--border);
+  padding: 2rem;
+  border-right: none;
   opacity: 0;
   animation: fadeIn 0.6s ease forwards;
   transition: background var(--transition);
 }
-
-.post-card:last-child { border-right: none; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
@@ -481,8 +479,8 @@ footer {
   html { font-size: 16px; }
   .container { padding: 0 1.25rem; }
 
-  nav { gap: 1.5rem; }
-  nav a { letter-spacing: 0.12em; }
+  nav { gap: 1rem; }
+  nav a { letter-spacing: 0.10em; font-size: 0.58rem; }
 
   .post-grid {
     grid-template-columns: 1fr;
@@ -506,13 +504,8 @@ footer {
   }
 
   .header-inner { gap: 1rem; }
-
-  .theme-toggle { display: none; }
 }
 
-@media (max-width: 480px) {
-  nav a:not(:first-child):not(:last-child) { display: none; }
-}
 .compass {
   font-size: 0.5em;
   vertical-align: middle;
