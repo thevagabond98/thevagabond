@@ -5,7 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Vagabond</title>
 
-  <meta name="description" content="Every creation begins as an idea. But ideas are everywhere — expression is rare.">
+  <meta name="description" content="Navigating the noise — politics, stories, poetry &amp; ideas for people who still believe words matter.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="The Vagabond">
+  <link rel="canonical" href="https://thevagabond.blog/">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://thevagabond.blog/">
+  <meta property="og:title"       content="The Vagabond">
+  <meta property="og:description" content="Navigating the noise — politics, stories, poetry &amp; ideas for people who still believe words matter.">
+  <meta property="og:site_name"   content="The Vagabond">
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card"        content="summary">
+  <meta name="twitter:site"        content="@The_Vagabond98">
+  <meta name="twitter:title"       content="The Vagabond">
+  <meta name="twitter:description" content="Navigating the noise — politics, stories, poetry &amp; ideas for people who still believe words matter.">
 
   <link rel="stylesheet" href="/assets/css/style.css">
 
@@ -14,6 +30,9 @@
 
   <!-- Netlify Identity -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <!-- DOMPurify: XSS sanitization -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js" integrity="sha512-2pQ4dpCCbkEiwh7tGSQYqI4yHGQGqM3d8lRODhHEvCLlkC6kqsG40IaqBIaqUvRlADiX4TcuMD6Uf7wkHxNg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -42,7 +61,7 @@
       <div class="container">
         <p class="hero-text">
           Navigating the noise;<br><br>
-          politics, stories, poetry & ideas<br><br>
+          politics, stories, poetry &amp; ideas<br><br>
           for people who still believe words matter.<span class="compass">🧭</span>
         </p>
       </div>
@@ -52,7 +71,6 @@
     <section class="posts-section">
       <div class="container">
         <p class="section-label">Latest</p>
-
         <div class="post-grid" id="latest-posts">
           <p class="loading">Loading…</p>
         </div>
@@ -66,19 +84,17 @@
     <div class="container">
       <div class="footer-inner">
         <span class="footer-copy">The Vagabond</span>
-       <div class="social-links">
-  <a href="https://twitter.com/The_Vagabond98" target="_blank">Twitter</a>
-  <a href="https://instagram.com/the_vagabond_98" target="_blank">Instagram</a>
-       </div>
+        <div class="social-links">
+          <a href="https://x.com/The_Vagabond98" target="_blank" rel="noopener noreferrer">Twitter</a>
+          <a href="https://www.instagram.com/the_vagabond_98/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- ✅ NETLIFY IDENTITY FIX (CRITICAL) -->
+  <!-- NETLIFY IDENTITY FIX (CRITICAL) -->
   <script>
     if (window.netlifyIdentity) {
-
-      // Redirect after login
       window.netlifyIdentity.on("init", user => {
         if (!user) {
           window.netlifyIdentity.on("login", () => {
@@ -86,8 +102,6 @@
           });
         }
       });
-
-      // ✅ Handle email confirmation + invite links
       window.netlifyIdentity.on("init", () => {
         if (
           window.location.hash.includes("confirmation_token") ||
@@ -96,7 +110,6 @@
           window.netlifyIdentity.open();
         }
       });
-
     }
   </script>
 

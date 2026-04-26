@@ -1,26 +1,21 @@
 /**
  * config.js — Site-wide configuration
  * Edit this file to update social links, site title, etc.
- * No HTML files need to be touched.
  */
 
 window.VAGABOND_CONFIG = {
   title: 'The Vagabond',
-  tagline: 'Every creation begins as an idea.\nBut ideas are everywhere —\n\nexpression is rare.',
+  tagline: 'Navigating the noise — politics, stories, poetry & ideas for people who still believe words matter.',
 
   social: [
-    { label: 'Instagram', url: 'https://instagram.com/' },
-    { label: 'Twitter',   url: 'https://twitter.com/' },
+    { label: 'Twitter',   url: 'https://x.com/The_Vagabond98' },
+    { label: 'Instagram', url: 'https://www.instagram.com/the_vagabond_98/' },
   ],
 
-  // Number of posts shown in "Latest" on homepage
   homepagePostCount: 8,
-
-  // Content paths
   contentBase: '/content',
   categories: ['stories', 'poems', 'ideas'],
 
-  // Category descriptions for category pages
   categoryMeta: {
     stories: {
       title: 'Stories',
