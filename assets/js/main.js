@@ -105,12 +105,23 @@ function markdownToHtml(md) {
     .replace(/^---$/gm, '<hr>')
     .split(/\n{2,}/)
     .map(block => {
-      block = block.trim();
-      if (!block) return '';
-      // Preserve all HTML block-level elements — do not re-wrap in <p>
-      if (/^<(h[1-6]|blockquote|hr|ul|ol|li|img|figure|figcaption|div|span|table|pre)/.test(block)) return block;
-      return `<p>${block.replace(/\n/g, '<br>')}</p>`;
-    })
+  block = block.trim();
+  if (!block) return '';
+
+  // Preserve CMS-generated HTML blocks
+  if (
+    /^<(h[1-6]|blockquote|hr|ul|ol|li|img|figure|figcaption|table|pre|div|span|p)/i.test(block)
+  ) {
+    return block;
+  }
+
+  // Preserve markdown image syntax
+  if (/^!\[.*\]\(.*\)$/.test(block)) {
+    return block;
+  }
+
+  return `<p>${block.replace(/\n/g, '<br>')}</p>`;
+})
     .join('\n');
 
   // DOMPurify is the final defence — cleans anything the regex pipeline missed
