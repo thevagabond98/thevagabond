@@ -11,6 +11,8 @@ collections:
     folder: "content/stories"
     create: true
     slug: "{{slug}}"
+    media_folder: "assets/images"
+    public_folder: "/assets/images"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
@@ -22,6 +24,8 @@ collections:
     folder: "content/poems"
     create: true
     slug: "{{slug}}"
+    media_folder: "assets/images"
+    public_folder: "/assets/images"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
@@ -33,6 +37,8 @@ collections:
     folder: "content/ideas"
     create: true
     slug: "{{slug}}"
+    media_folder: "assets/images"
+    public_folder: "/assets/images"
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
