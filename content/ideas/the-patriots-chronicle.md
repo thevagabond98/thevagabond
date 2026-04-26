@@ -115,10 +115,6 @@ The patriots are not gone. They are grieving, frustrated, and drowned out by noi
 
 They exist. And if you found yourself nodding through this article, they are you.
 
-
-
 *“Anger at the right things is not cynicism. It is the last form of patriotism left.”*
-
-
 
 All statistics sourced from government data, Transparency International, Lokniti-CSDS, RBI reports, and parliamentary records.  ·  March 2026
