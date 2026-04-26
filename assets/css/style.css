@@ -514,3 +514,45 @@ footer {
   margin-left: 6px;
   opacity: 0.65;
 }
+
+/* ─────────────────────────────────────────────
+   POST BODY — CMS rich-text rendering fixes
+   Added to fix: image display, paragraph spacing,
+   figure/figcaption, line-height after CMS output
+───────────────────────────────────────────── */
+
+.post-body p {
+  margin-bottom: 1.6rem;
+  line-height: 1.9;
+}
+
+.post-body p:last-child {
+  margin-bottom: 0;
+}
+
+.post-body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 2rem auto;
+  border-radius: 2px;
+}
+
+.post-body figure {
+  margin: 2.5rem 0;
+  text-align: center;
+}
+
+.post-body figure img {
+  margin: 0 auto 0.75rem;
+}
+
+.post-body figcaption {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  opacity: 0.75;
+  text-align: center;
+  line-height: 1.5;
+}

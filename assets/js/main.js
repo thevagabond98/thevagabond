@@ -19,8 +19,15 @@ const DOMPURIFY_CONFIG = {
     'a','img',
     'ul','ol','li',
     'table','thead','tbody','tr','th','td',
+    // CMS rich-text blocks
+    'figure','figcaption',
+    'div','span',
   ],
-  ALLOWED_ATTR: ['href','src','alt','title','class','target','rel'],
+  ALLOWED_ATTR: [
+    'href','src','alt','title','class','target','rel',
+    // CMS image attributes
+    'width','height','loading',
+  ],
   ALLOW_DATA_ATTR: false,
   FORBID_TAGS: ['script','style','iframe','object','embed','form','input'],
   FORBID_ATTR: ['onerror','onload','onclick','onmouseover','onfocus','onblur'],
@@ -100,7 +107,8 @@ function markdownToHtml(md) {
     .map(block => {
       block = block.trim();
       if (!block) return '';
-      if (/^<(h[1-6]|blockquote|hr|ul|ol|li)/.test(block)) return block;
+      // Preserve all HTML block-level elements — do not re-wrap in <p>
+      if (/^<(h[1-6]|blockquote|hr|ul|ol|li|img|figure|figcaption|div|span|table|pre)/.test(block)) return block;
       return `<p>${block.replace(/\n/g, '<br>')}</p>`;
     })
     .join('\n');
