@@ -98,7 +98,7 @@ function markdownToHtml(md) {
     .replace(/`(.+?)`/g,       '<code>$1</code>')
     // Images — src sanitised before DOMPurify pass
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) =>
-      `<img src="${escapeHtml(safeUrl(src))}" alt="${escapeHtml(alt)}">`)
+      `<img src="${escapeHtml(safeUrl(src))}" alt="${escapeHtml(alt || ' ')}" loading="lazy">`)
     // Links — href sanitised before DOMPurify pass
     .replace(/\[(.+?)\]\((.+?)\)/g, (_, text, href) =>
       `<a href="${escapeHtml(safeUrl(href))}">${escapeHtml(text)}</a>`)
