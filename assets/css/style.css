@@ -343,7 +343,7 @@ nav a:hover { color: var(--text); }
   line-height: 1.85;
 }
 
-.post-body p { margin-bottom: 1.5rem; }
+.post-body p { margin-bottom: 1.6rem; line-height: 1.9; }
 .post-body p:last-child { margin-bottom: 0; }
 
 .post-body h2, .post-body h3 {
@@ -515,20 +515,7 @@ footer {
   opacity: 0.65;
 }
 
-/* ─────────────────────────────────────────────
-   POST BODY — CMS rich-text rendering fixes
-   Added to fix: image display, paragraph spacing,
-   figure/figcaption, line-height after CMS output
-───────────────────────────────────────────── */
-
-.post-body p {
-  margin-bottom: 1.6rem;
-  line-height: 1.9;
-}
-
-.post-body p:last-child {
-  margin-bottom: 0;
-}
+/* ─── Post body image / figure rules (moved inline above) ─── */
 
 .post-body img {
   display: block;

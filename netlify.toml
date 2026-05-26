@@ -4,6 +4,9 @@
   publish = "."
   command = "node generate-index.js"
 
+[build.environment]
+  NODE_VERSION = "18"
+
 # Clean URLs
 [[redirects]]
   from = "/stories"

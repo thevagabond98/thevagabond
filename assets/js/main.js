@@ -63,9 +63,9 @@ function safeUrl(url) {
   try {
     const u = new URL(url, window.location.href);
     if (u.protocol === 'http:' || u.protocol === 'https:') return url;
-  } catch (_) {
-    if (/^\/[^/]/.test(url) || /^[^:]+$/.test(url)) return url;
-  }
+  } catch (_) {}
+  // Allow absolute paths, relative paths, and filenames (no protocol = safe)
+  if (/^[^:]*$/.test(url)) return url;
   return '#';
 }
 
@@ -75,12 +75,19 @@ function parseFrontmatter(raw) {
   if (!match) return { meta: {}, body: raw };
 
   const meta = {};
+  let lastKey = null;
   match[1].split('\n').forEach(line => {
+    // YAML folded-scalar continuation: indented line with no colon = append to last key
+    if (lastKey && /^ {2,}\S/.test(line) && line.indexOf(':') === -1) {
+      meta[lastKey] = (meta[lastKey] + ' ' + line.trim()).replace(/^["']|["']$/g, '');
+      return;
+    }
     const colon = line.indexOf(':');
     if (colon === -1) return;
     const key = line.slice(0, colon).trim();
     const val = line.slice(colon + 1).trim().replace(/^["']|["']$/g, '');
     meta[key] = val;
+    lastKey = key;
   });
   return { meta, body: match[2].trim() };
 }
