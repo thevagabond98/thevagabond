@@ -434,6 +434,7 @@ async function renderPost() {
     // markdownToHtml() already runs sanitize() internally
     const bodyHtml = markdownToHtml(post.body);
 
+    window.scrollTo(0, 0);
     container.innerHTML = `
       <a href="${escapeHtml(categoryHref)}" class="back-link">← ${escapeHtml(category)}</a>
       <header class="post-header">
