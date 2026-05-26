@@ -97,7 +97,7 @@ But why?
 
 The journey back felt longer.
 
-He reached home by evening, his face calm, his thoughts anything but.
+He reached home by evening, his face calm, his thoughts anything but settled.
 
 “Why so late?” his mother asked.
 
