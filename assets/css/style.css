@@ -83,7 +83,7 @@ img { max-width: 100%; display: block; }
 main { flex: 1; }
 
 /* ── Header ── */
-header {
+body > header {
   border-bottom: 1px solid var(--border);
   padding: 1.5rem 0;
   position: sticky;
