@@ -2,6 +2,14 @@ backend:
   name: git-gateway
   branch: main
 
+# Direct publishing (no editorial workflow): saving commits straight to main
+publish_mode: simple
+
+# ASCII-only filenames for NEW posts (stops "U2013" appearing in slugs for en dashes)
+slug:
+  encoding: "ascii"
+  clean_accents: true
+
 media_folder: "/assets/images"
 public_folder: "/assets/images"
 

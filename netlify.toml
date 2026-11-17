@@ -28,18 +28,17 @@
   for = "/*"
   [headers.values]
     X-Content-Type-Options    = "nosniff"
-    X-XSS-Protection          = "1; mode=block"
     Referrer-Policy           = "strict-origin-when-cross-origin"
     Permissions-Policy        = "geolocation=(), microphone=(), camera=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
 
     # Content-Security-Policy
-    # - script-src: self + Netlify Identity widget + DOMPurify CDN (cdnjs)
-    # - connect-src: self + Netlify API (Identity & Git Gateway) + cdnjs
+    # - script-src: self + Netlify Identity widget + Decap CMS (jsdelivr). DOMPurify is now self-hosted.
+    # - connect-src: self + Netlify API (Identity & Git Gateway); blob: for CMS image uploads
+    # - style-src / font-src: Google Fonts (style.css imports EB Garamond, Cormorant, Inter)
+    # - img-src: self + data/blob URIs (CMS draft image previews) + any https image
     # - frame-src: Netlify Identity OAuth popup
-    # - img-src: self + data URIs + any https image (for OG images / post images)
-    # - font-src: self + data URIs
-    # - object-src: none (blocks Flash/plugins)
-    # - frame-ancestors: none (clickjacking protection)
-    # NOTE: 'unsafe-inline' in style-src is required by the inline theme toggle
-Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://identity.netlify.com https://api.netlify.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; connect-src 'self' https://api.netlify.com https://identity.netlify.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; frame-src https://identity.netlify.com; object-src 'none'; frame-ancestors 'none';"
+    # - object-src: none, frame-ancestors: none (clickjacking protection)
+    # NOTE: 'unsafe-inline' / 'unsafe-eval' are kept because the Decap CMS admin and the
+    #       inline Netlify Identity snippet need them.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://identity.netlify.com https://api.netlify.com https://cdn.jsdelivr.net; connect-src 'self' blob: https://api.netlify.com https://identity.netlify.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; frame-src https://identity.netlify.com; object-src 'none'; frame-ancestors 'none';"

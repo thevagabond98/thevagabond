@@ -70,7 +70,15 @@ function safeUrl(url) {
 }
 
 /* ─── Frontmatter parser ──────────────────────────────────────── */
+// Strip surrounding quotes only when the value both starts and ends with the same quote
+function unquote(v) {
+  const m = v.match(/^(["'])([\s\S]*)\1$/);
+  return m ? m[2] : v;
+}
+
 function parseFrontmatter(raw) {
+  // Normalise Windows (\r\n) and old-Mac (\r) line endings so paragraph splitting works
+  raw = String(raw).replace(/\r\n?/g, '\n').replace(/^\uFEFF/, '');
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
   if (!match) return { meta: {}, body: raw };
 
@@ -79,60 +87,112 @@ function parseFrontmatter(raw) {
   match[1].split('\n').forEach(line => {
     // YAML folded-scalar continuation: indented line with no colon = append to last key
     if (lastKey && /^ {2,}\S/.test(line) && line.indexOf(':') === -1) {
-      meta[lastKey] = (meta[lastKey] + ' ' + line.trim()).replace(/^["']|["']$/g, '');
+      meta[lastKey] = unquote(meta[lastKey] + ' ' + line.trim());
       return;
     }
     const colon = line.indexOf(':');
     if (colon === -1) return;
     const key = line.slice(0, colon).trim();
-    const val = line.slice(colon + 1).trim().replace(/^["']|["']$/g, '');
+    const val = unquote(line.slice(colon + 1).trim());
     meta[key] = val;
     lastKey = key;
   });
   return { meta, body: match[2].trim() };
 }
 
-/* ─── Minimal Markdown → HTML ─────────────────────────────────── */
-function markdownToHtml(md) {
-  const html = md
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm,  '<h2>$1</h2>')
-    .replace(/^# (.+)$/gm,   '<h1>$1</h1>')
-    .replace(/^> (.+)$/gm,   '<blockquote>$1</blockquote>')
+/* ─── Markdown → HTML ─────────────────────────────────────────── */
+// Inline formatting. Code, images and links are lifted into placeholders first so
+// characters inside URLs (e.g. underscores in image names) are never read as emphasis.
+function inlineMd(text) {
+  const stash = [];
+  const hold = html => '\u0000' + (stash.push(html) - 1) + '\u0000';
+
+  let out = String(text)
+    .replace(/`([^`]+)`/g, (_, c) => hold('<code>' + escapeHtml(c) + '</code>'))
+    .replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, (_, alt, src) =>
+      hold(`<img src="${escapeHtml(safeUrl(src))}" alt="${escapeHtml(alt || ' ')}" loading="lazy">`))
+    .replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, (_, t, href) =>
+      hold(`<a href="${escapeHtml(safeUrl(href))}">${escapeHtml(t)}</a>`));
+
+  out = out
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,     '<em>$1</em>')
-    .replace(/_(.+?)_/g,       '<em>$1</em>')
-    .replace(/`(.+?)`/g,       '<code>$1</code>')
-    // Images — src sanitised before DOMPurify pass
-    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) =>
-      `<img src="${escapeHtml(safeUrl(src))}" alt="${escapeHtml(alt || ' ')}" loading="lazy">`)
-    // Links — href sanitised before DOMPurify pass
-    .replace(/\[(.+?)\]\((.+?)\)/g, (_, text, href) =>
-      `<a href="${escapeHtml(safeUrl(href))}">${escapeHtml(text)}</a>`)
-    .replace(/^---$/gm, '<hr>')
-    .split(/\n{2,}/)
-    .map(block => {
-  block = block.trim();
-  if (!block) return '';
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    // _em_ only at word boundaries, so snake_case words are left alone
+    .replace(/(^|[\s(>])_([^\s_](?:[^_]*?[^\s_])?)_(?=$|[\s).,;:!?<])/g, '$1<em>$2</em>');
 
-  // Preserve CMS-generated HTML blocks
-  if (
-    /^<(h[1-6]|blockquote|hr|ul|ol|li|img|figure|figcaption|table|pre|div|span|p)/i.test(block)
-  ) {
-    return block;
+  return out.replace(/\u0000(\d+)\u0000/g, (_, i) => stash[+i]);
+}
+
+// Blocks that already are HTML (CMS-generated) are passed straight to DOMPurify.
+const RAW_BLOCK = /^<(h[1-6]|blockquote|hr|ul|ol|li|img|figure|figcaption|table|pre|div|span|p)[\s>\/]/i;
+
+function markdownToHtml(md) {
+  // Normalise Windows (\r\n) / old-Mac (\r) line endings first
+  const lines = String(md).replace(/\r\n?/g, '\n').split('\n');
+  const out = [];
+  let para = [], quote = [], list = null, fence = null;
+
+  const flushPara = () => {
+    if (!para.length) return;
+    const text = para.join(' ').trim();
+    para = [];
+    if (!text) return;
+    if (RAW_BLOCK.test(text)) out.push(text);
+    else if (/^!\[[^\]]*\]\([^)]*\)$/.test(text)) out.push(inlineMd(text)); // image on its own
+    else out.push('<p>' + inlineMd(text) + '</p>');
+  };
+  const flushQuote = () => {
+    if (!quote.length) return;
+    const groups = [[]];
+    quote.forEach(l => { if (l === '') groups.push([]); else groups[groups.length - 1].push(l); });
+    const paras = groups.filter(g => g.length).map(g => inlineMd(g.join(' ')));
+    out.push('<blockquote>' + (paras.length > 1 ? paras.map(x => '<p>' + x + '</p>').join('') : paras[0] || '') + '</blockquote>');
+    quote = [];
+  };
+  const flushList = () => {
+    if (!list) return;
+    out.push(`<${list.tag}>` + list.items.map(i => '<li>' + inlineMd(i) + '</li>').join('') + `</${list.tag}>`);
+    list = null;
+  };
+  const flushAll = () => { flushPara(); flushQuote(); flushList(); };
+
+  for (const rawLine of lines) {
+    const line = rawLine.replace(/\s+$/, '');
+
+    if (fence !== null) {                      // inside ``` code block
+      if (/^```/.test(line)) { out.push('<pre><code>' + escapeHtml(fence.join('\n')) + '</code></pre>'); fence = null; }
+      else fence.push(rawLine);
+      continue;
+    }
+    if (/^```/.test(line)) { flushAll(); fence = []; continue; }
+    if (!line.trim())      { flushAll(); continue; }   // blank line = paragraph break
+
+    let m;
+    if ((m = line.match(/^(#{1,6})\s+(.+?)\s*$/))) {
+      flushAll();
+      out.push(`<h${m[1].length}>${inlineMd(m[2])}</h${m[1].length}>`);
+      continue;
+    }
+    if (/^(-{3,}|\*{3,}|_{3,})$/.test(line.trim())) { flushAll(); out.push('<hr>'); continue; }
+    if ((m = line.match(/^>\s?(.*)$/))) { flushPara(); flushList(); quote.push(m[1].trim()); continue; }
+    if ((m = line.match(/^\s{0,3}[-*+]\s+(.+)$/))) {
+      flushPara(); flushQuote();
+      if (!list || list.tag !== 'ul') { flushList(); list = { tag: 'ul', items: [] }; }
+      list.items.push(m[1]); continue;
+    }
+    if ((m = line.match(/^\s{0,3}\d{1,3}[.)]\s+(.+)$/))) {   // 1-3 digits so "2019. Text" stays a paragraph
+      flushPara(); flushQuote();
+      if (!list || list.tag !== 'ol') { flushList(); list = { tag: 'ol', items: [] }; }
+      list.items.push(m[1]); continue;
+    }
+    flushQuote(); flushList();
+    para.push(line.trim());
   }
+  if (fence !== null) out.push('<pre><code>' + escapeHtml(fence.join('\n')) + '</code></pre>');
+  flushAll();
 
-  // Preserve markdown image syntax
-  if (/^!\[.*\]\(.*\)$/.test(block)) {
-    return block;
-  }
-
-  return `<p>${block.replace(/\n/g, ' ')}</p>`;
-})
-    .join('\n');
-
-  // DOMPurify is the final defence — cleans anything the regex pipeline missed
-  return sanitize(html);
+  // DOMPurify is the final defence — cleans anything the parser let through
+  return sanitize(out.join('\n'));
 }
 
 /* ─── Fetch helpers ───────────────────────────────────────────── */
@@ -155,7 +215,8 @@ async function fetchCategory(category) {
     const slugs = await res.json();
     if (!Array.isArray(slugs)) return [];
     const posts = await Promise.allSettled(slugs.map(s => fetchPost(category, s)));
-    return posts.filter(r => r.status === 'fulfilled').map(r => r.value);
+    return posts.filter(r => r.status === 'fulfilled').map(r => r.value)
+      .sort((x, y) => new Date(y.date) - new Date(x.date));
   } catch {
     return [];
   }
@@ -425,6 +486,11 @@ async function renderPost() {
     setMeta('og-url',         `https://thevagabond.blog/post.html?category=${encodeURIComponent(category)}&slug=${encodeURIComponent(slug)}`);
     setMeta('tw-title',       post.title || 'The Vagabond');
     setMeta('tw-description', post.description || '');
+
+    // Canonical URL for this post
+    let canon = document.querySelector('link[rel="canonical"]');
+    if (!canon) { canon = document.createElement('link'); canon.rel = 'canonical'; document.head.appendChild(canon); }
+    canon.href = `https://thevagabond.blog/post.html?category=${encodeURIComponent(category)}&slug=${encodeURIComponent(slug)}`;
 
     // JSON-LD Article + Breadcrumb schema
     injectArticleSchema(post, category, slug);

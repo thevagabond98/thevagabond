@@ -1,7 +1,7 @@
 # The Vagabond — Setup Guide
 
 A minimal CMS-powered writing platform. Static HTML/CSS/JS frontend,
-Netlify CMS backend, Git-based content storage.
+Decap CMS (formerly Netlify CMS) backend, Git-based content storage.
 
 ---
 
@@ -13,7 +13,7 @@ Netlify CMS backend, Git-based content storage.
 ├── about.html                  ← About page
 ├── post.html                   ← Dynamic post page (?category=&slug=)
 ├── netlify.toml                ← Netlify config + build command
-├── generate-index.js           ← Rebuilds content/*/index.json
+├── generate-index.js           ← Rebuilds content/*/index.json + sitemap.xml
 │
 ├── stories/index.html          ← Stories category page
 ├── poems/index.html            ← Poems category page
@@ -35,10 +35,12 @@ Netlify CMS backend, Git-based content storage.
 │   └── config.yml              ← CMS collections config
 │
 └── assets/
+    ├── images/                 ← CMS uploads land here (committed on Publish)
     ├── css/style.css           ← All styles (dark + light mode)
     └── js/
         ├── config.js           ← Social links, site settings
         ├── theme.js            ← Dark/light toggle
+        ├── purify.min.js       ← DOMPurify 3.1.6 (self-hosted; replaces the CDN copy)
         └── main.js             ← Fetches + renders all posts
 ```
 
