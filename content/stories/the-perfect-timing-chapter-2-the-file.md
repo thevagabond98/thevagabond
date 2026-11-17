@@ -1,7 +1,7 @@
 ---
 title: "THE PERFECT TIMING: Chapter 2 – The File"
 date: 2026-05-26T05:21:01.919Z
-description: Chaper 2 of the story "The perfect timing"
+description: Chapter 2 of the story "The perfect timing"
 ---
 The next morning, Arya left home earlier than usual.
 
